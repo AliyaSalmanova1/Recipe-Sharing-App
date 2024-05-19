@@ -1,5 +1,5 @@
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css';
 
 import axios from 'axios'
@@ -8,6 +8,16 @@ function App() {
 
   const [file, setFile] = useState()
   const [recipeText, setRecipeText] = useState("")
+  const [recipePosts, setRecipePosts] = useState([])
+
+  useEffect(() => {
+    (async() => {
+      const result = await axios.get('/recipes')
+      console.log('result', result)
+      setRecipePosts(result.data.recipes)
+    })()
+  }, [])
+  
   
   const submit = async event => {
     event.preventDefault()
@@ -20,6 +30,7 @@ function App() {
 
     const result = await axios.post('/recipes', data)
     console.log('result', result)
+    setRecipePosts([result.data, ...recipePosts])
 
 
   }
@@ -44,6 +55,17 @@ function App() {
 
       </form>
       <main>
+        {recipePosts[0] !== undefined && 
+          recipePosts.map(post => {
+            return (
+              <figure key={post.id}>
+                <img src={post.image_url}/>
+                <figcaption>{post.recipeText}</figcaption>
+              </figure>
+            )
+            
+          })
+        }
 
       </main>
       
