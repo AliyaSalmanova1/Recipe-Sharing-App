@@ -7,14 +7,14 @@ import axios from 'axios'
 function App() {
 
   const [file, setFile] = useState()
-  const [text, setText] = useState("")
+  const [recipeText, setRecipeText] = useState("")
   
   const submit = async event => {
     event.preventDefault()
 
     const data = new FormData()
     data.append('image', file)
-    data.append('text', text)
+    data.append('recipeText', recipeText)
 
     console.log('data', data)
 
@@ -37,7 +37,7 @@ function App() {
         accept="image/*"></input>
 
         <input type="text"
-        onChange={e => setText(e.target.value)}
+        onChange={e => setRecipeText(e.target.value)}
         placeholder="text"></input>
 
         <button type="submit">Submit</button>
