@@ -6,8 +6,9 @@ const pool = mysql.createPool({
     password : process.env.MYSQL_PASSWORD || 'Yalannan01?',
     database : process.env.MYSQL_DATABASE || 'recipeApp',
     waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
+ 
+    queueLimit: 0,
+    port: 3306
 });
 
 const promisePool = pool.promise();
@@ -29,9 +30,18 @@ exports.createRecipe = createRecipe;
 // Add other functions as needed, using promisePool for queries
 
 
-function getRecipes() {
-
+async function getRecipes(callback) {
+    try {
+        const [results, fields] = await promisePool.query(
+            'SELECT * FROM recipes'
+        );
+        callback(null, results);
+    } catch (error) {
+        callback(error);
+    }
 }
+
+exports.getRecipes = getRecipes;
  
 
  

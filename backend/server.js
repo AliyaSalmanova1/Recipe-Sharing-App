@@ -9,7 +9,17 @@ const database = require('./database')
 app.get('/recipes', (req, res) => {
     console.log('in get request')
 
+    database.getRecipes((error, recipes) => {
+        if (error) {
+            res.send({error: error.message})
+            return
+        }
+        res.send({recipes})
+    })
+
 })
+
+
 
 app.post('/recipes', upload.single('image'), (req, res) => {
     console.log('in post', req.file)
