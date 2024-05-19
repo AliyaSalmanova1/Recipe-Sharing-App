@@ -34,7 +34,7 @@ app.post('/recipes', upload.single('image'), (req, res) => {
 
         })
     })
-    res.send('sending')
+  
 
 })
 
