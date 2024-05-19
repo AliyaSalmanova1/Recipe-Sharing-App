@@ -7,16 +7,18 @@ import axios from 'axios'
 function App() {
 
   const [file, setFile] = useState()
-  const [description, setDescription] = useState("")
+  const [text, setText] = useState("")
   
   const submit = async event => {
     event.preventDefault()
 
     const data = new FormData()
     data.append('image', file)
-    data.append('description', description)
+    data.append('text', text)
 
-    const result = await axios.post('/posts', data)
+    console.log('data', data)
+
+    const result = await axios.post('/recipes', data)
     console.log('result', result)
 
 
@@ -33,10 +35,13 @@ function App() {
         filename={file}
         onChange={e => setFile(e.target.files[0])}
         accept="image/*"></input>
+
         <input type="text"
-        onChange={e => setDescription(e.target.value)}
-        placeholder="description"></input>
+        onChange={e => setText(e.target.value)}
+        placeholder="text"></input>
+
         <button type="submit">Submit</button>
+
       </form>
       <main>
 
