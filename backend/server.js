@@ -9,6 +9,8 @@ const app = express()
 
 const database = require('./database')
 
+app.use(express.static('build'))
+
 app.get('/images/:filename', (req, res) => {
     console.log('inside get images')
     const filename = req.params.filename
@@ -57,6 +59,10 @@ app.post('/recipes', upload.single('image'), (req, res) => {
     })
   
 
+})
+//for react router
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build/index.html'))
 })
 
 const port = process.env.PORT || 8080
