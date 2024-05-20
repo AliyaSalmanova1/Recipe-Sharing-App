@@ -1,7 +1,7 @@
 const mysql = require('mysql2');
 
 const pool = mysql.createPool({
-    host     : process.env.MYSQL_HOST || 'localhost',
+    host     : process.env.MYSQL_HOST || '127.0.0.1',
     user     : process.env.MYSQL_USER || 'AliyaSalmanova1',
     password : process.env.MYSQL_PASSWORD || 'Yalannan01?',
     database : process.env.MYSQL_DATABASE || 'recipeApp',

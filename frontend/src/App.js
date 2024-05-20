@@ -55,7 +55,7 @@ function App() {
 
       </form>
       <main>
-        {recipePosts[0] !== undefined && 
+        { recipePosts !== undefined && 
           recipePosts.map(post => {
             return (
               <figure key={post.id}>

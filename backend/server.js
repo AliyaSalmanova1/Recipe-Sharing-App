@@ -2,9 +2,20 @@ const express = require('express')
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' })
 
+const fs = require('fs')
+const path = require('path')
+
 const app = express()
 
 const database = require('./database')
+
+app.get('/images/:filename', (req, res) => {
+    console.log('inside get images')
+    const filename = req.params.filename
+
+    const readStream = fs.createReadStream(path.join(__dirname, 'uploads', filename))
+    readStream.pipe(res)
+})
 
 app.get('/recipes', (req, res) => {
     console.log('in get request')
@@ -29,7 +40,7 @@ app.post('/recipes', upload.single('image'), (req, res) => {
 
     //save data to database
 
-    const image_url = `images/${filename}`
+    const image_url = `http://localhost:8080/images/${filename}`
 
 
     database.createRecipe(recipeText, image_url, (error, insertId) => {
