@@ -7,6 +7,7 @@ const bucketName = process.env.S3_BUCKET_NAME
 
 const { S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
 const fs = require("fs")
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 
 
 // client is created once in the global scope.
@@ -47,15 +48,19 @@ exports.uploadFile = uploadFile
 //   return fileStream
 // }
 
-async function getFileStream(fileKey){
+async function getFileStream(fileKey) {
+  const downloadParams = {
+    Bucket: bucketName,
+    Key: fileKey,
+  };
+
   try {
-      const url = await getSignedUrl(s3Client, new GetObjectCommand({
-            Bucket: bucketName,
-            Key: fileKey,
-      }))
-      return url
-  } catch (error) {
-      console.log("there was an error:", error)
+    const data = await s3Client.send(new GetObjectCommand(downloadParams));
+   
+    return data.Body; // This is the actual readable stream.
+  } catch (err) {
+    console.error(`Error getting file stream: ${err.message}`);
+    throw err;
   }
 }
 exports.getFileStream = getFileStream

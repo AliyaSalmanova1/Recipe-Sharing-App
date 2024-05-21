@@ -13,14 +13,20 @@ const s3 = require('./s3')
 
 app.use(express.static('build'))
 
-app.get('/images/:filename', (req, res) => {
-    console.log('inside get images')
-    const filename = req.params.filename
-
-    const readStream = s3.getFileStream(filename)
-
-    readStream.pipe(res)
-})
+app.get('/images/:filename', async (req, res) => {
+    console.log('inside get images');
+    const filename = req.params.filename;
+  
+    try {
+        console.log('inside try block')
+      const readStream = await s3.getFileStream(filename);
+  
+    
+      readStream.pipe(res);
+    } catch (err) {
+      res.status(500).send('Error retrieving file');
+    }
+  });
 
 app.get('/recipes', (req, res) => {
     console.log('in get request')
