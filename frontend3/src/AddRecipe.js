@@ -31,6 +31,20 @@ function AddRecipe() {
 
     const result = await axios.post('/recipes', data);
     console.log('result', result);
+
+    data.delete('image');
+    data.delete('recipeTitle');
+    data.delete('recipeCaption');
+    data.delete('prepTime');
+    data.delete('ingredients');
+    data.delete('instructions');
+
+    setFile(null);
+    setRecipeTitle("");
+    setRecipeCaption("");
+    setPrepTime("");
+    setIngredients("");
+    setInstructions("");
   };
 
   return (
@@ -79,7 +93,7 @@ function AddRecipe() {
           variant="outlined"
           value={ingredients}
           multiline
-          sx={{ mb: 4 }}
+          sx={{ mb: 2 }}
           rows={4}
         />
         <TextField
