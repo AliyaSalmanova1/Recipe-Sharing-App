@@ -41,13 +41,33 @@ app.get('/recipes', (req, res) => {
 
 })
 
+app.get('/recipe/:recipeTitle', (req, res) => {
+
+    const recipeTitle = req.params.recipeTitle.replaceAll('_', ' ');
+    console.log('in get req,', req.params)
+    database.getRecipeInfo((error, recipeInfo) => {
+        if (error) {
+            res.send({error: error.message})
+            return
+        }
+        res.send({recipeInfo})
+    }, recipeTitle)
+
+})
+
 
 
 app.post('/recipes', upload.single('image'), async (req, res) => {
     console.log('in post', req.file)
 
+
     const { filename, path } = req.file
-    const recipeText = req.body.recipeText
+    const recipeTitle = req.body.recipeTitle
+    const recipeCaption = req.body.recipeCaption
+    const prepTime = req.body.prepTime
+    const ingredients = req.body.ingredients
+    const instructions = req.body.instructions
+
 
     await s3.uploadFile(req.file)
 
@@ -56,15 +76,26 @@ app.post('/recipes', upload.single('image'), async (req, res) => {
     const image_url = `/images/${filename}`
 
 
-    database.createRecipe(recipeText, image_url, (error, insertId) => {
+    database.createRecipe(image_url,
+        recipeTitle,
+        recipeCaption,
+        prepTime,
+        ingredients,
+        instructions, (error, insertId) => {
         if (error) {
+            console.log('in error')
             res.send({error: error.message})
             return
         }
         res.send({
             id: insertId,
-            recipeText,
-            image_url
+            image_url,
+            recipeTitle,
+            recipeCaption,
+            prepTime,
+            ingredients,
+            instructions
+
 
         })
     })

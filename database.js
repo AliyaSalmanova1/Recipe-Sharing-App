@@ -13,14 +13,19 @@ const pool = mysql.createPool({
 
 const promisePool = pool.promise();
 
-async function createRecipe(recipeText, image_url, callback) {
+async function createRecipe(image_url, recipeTitle,
+    recipeCaption,
+    prepTime,
+    ingredients,
+    instructions, callback) {
     try {
         const [results, fields] = await promisePool.query(
-            'INSERT INTO recipes (recipeText, image_url) VALUES (?, ?)',
-            [recipeText, image_url]
+            'INSERT INTO recipes (image_url, recipeTitle, recipeCaption, prepTime, ingredients, instructions) VALUES (?, ?, ?, ?, ?, ?)',
+            [image_url, recipeTitle, recipeCaption, prepTime, ingredients, instructions]
         );
         callback(null, results.insertId);
     } catch (error) {
+        console.log('in catch')
         callback(error);
     }
 }
@@ -42,6 +47,21 @@ async function getRecipes(callback) {
 }
 
 exports.getRecipes = getRecipes;
+
+async function getRecipeInfo(callback, recipeTitleVar) {
+    try {
+        
+        const [results, fields] = await promisePool.query(
+            'SELECT * FROM recipes WHERE recipeTitle = ?', [recipeTitleVar]
+
+        );
+        callback(null, results);
+    } catch (error) {
+        callback(error);
+    }
+}
+
+exports.getRecipeInfo = getRecipeInfo;
  
 
  
