@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { Container, Box, TextField, Button, Typography } from '@mui/material';
+import { Container, Box, TextField, Button, Typography, Paper } from '@mui/material';
 import { styled } from '@mui/system';
 
 const SubmitButton = styled(Button)(({ theme }) => ({
   marginTop: theme.spacing(2),
+  height: '56px'
 }));
 
 function AddRecipe() {
@@ -33,9 +34,10 @@ function AddRecipe() {
   };
 
   return (
-    <Container>
+    <Container maxWidth="md" style={{ marginTop: '2rem', marginBottom: '2rem' }}>
+      <Paper elevation={3} style={{ padding: '2rem', borderRadius: '15px' }}>
       <Box component="form" onSubmit={submit} sx={{ display: 'flex', flexDirection: 'column', mt: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
+        <Typography variant="h4" component="h1" sx={{ mb: 4 }}>
           Add a New Recipe
         </Typography>
         <TextField
@@ -60,6 +62,8 @@ function AddRecipe() {
           variant="outlined"
           value={recipeCaption}
           sx={{ mb: 2 }}
+          multiline
+          rows={2}
         />
         <TextField
           onChange={e => setPrepTime(e.target.value)}
@@ -67,20 +71,25 @@ function AddRecipe() {
           variant="outlined"
           value={prepTime}
           sx={{ mb: 2 }}
+       
         />
         <TextField
           onChange={e => setIngredients(e.target.value)}
           label="Ingredients"
           variant="outlined"
           value={ingredients}
-          sx={{ mb: 2 }}
+          multiline
+          sx={{ mb: 4 }}
+          rows={4}
         />
         <TextField
           onChange={e => setInstructions(e.target.value)}
           label="Instructions"
           variant="outlined"
           value={instructions}
+          multiline
           sx={{ mb: 2 }}
+          rows={4}
         />
         <SubmitButton
           type="submit"
@@ -90,6 +99,7 @@ function AddRecipe() {
           Submit
         </SubmitButton>
       </Box>
+      </Paper>
     </Container>
   );
 }
