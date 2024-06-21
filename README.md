@@ -5,7 +5,7 @@ You can click on any recipe card to see recipe in full, or you can add a new rec
 
 Images are stored in AWS S3. App is deployed with Heroku. 
 
-Tech Stack - JavaScript, React, Material UI (MUI), Express.js, MySQL, AWS S3. 
+🧰 Tech Stack - JavaScript, React, Material UI (MUI), Express.js, MySQL, AWS S3. 
 
 ### Available Scripts:
 
